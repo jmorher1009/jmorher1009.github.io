@@ -4,10 +4,11 @@ h2 {
 }
 
 body {
-    font-family: Tahoma,sans-serif;
+    font-family: Arial,sans-serif;
     background-image: url("descarga1.png");
     width: 100%;
     margin: 0;
+    align-content: center;
 }
 
 div {
@@ -20,11 +21,12 @@ h1 {
 }
 
 div[id="estructura"] {
-    margin: 0px 40px;
+    margin: 40px;
     padding: 5%;
     width: auto;
     align-content: center;
-    max-width: 1400px;
+    text-align: center;
+    max-width: 2000px;
     min-width: 300px;
     background: rgba(200,120,120,0.8333);
 }
