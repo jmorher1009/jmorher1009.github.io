@@ -48,7 +48,8 @@ div[class="block"] {
   div[id="estructura"] {
     margin-left: auto;
     margin-right: auto;
-    padding: 5%;
+    padding-left: 20px;
+    padding-right: 20px;
     text-align: center;
   }
 }
