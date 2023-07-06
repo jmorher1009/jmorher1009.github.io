@@ -37,7 +37,17 @@ div[class="block"] {
     display:flow;
 }
 
+@media only screen and (max-width: 600px) {
+  body {
+    text-align: center;
+  }
 
+  div[id="estructura"] {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+}
 img {
     padding: 10px;
     width: 100px;
