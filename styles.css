@@ -23,6 +23,7 @@ div[id="estructura"] {
     margin: 0px 40px;
     padding: 5%;
     width: auto;
+    align-content: center;
     max-width: 1400px;
     min-width: 300px;
     background: rgba(200,120,120,0.8333);
