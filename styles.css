@@ -64,6 +64,8 @@ div[class="block"] {
 img {
     padding: 8%;
     width: 50px;
+    align-items: center;
+    align-content: center;
 }
 
 footer {
