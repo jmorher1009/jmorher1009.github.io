@@ -5,7 +5,7 @@ h2 {
 
 body {
     font-family: Arial,sans-serif;
-    background-image: url("plantilla_1.jpg");
+    background-image: url("plantilla_5.jpg");
     /* Background-size:cover;*/
     width: 100%;
     margin: 0;
@@ -28,7 +28,7 @@ section[class="media-raciones"]{
 h1 {
     border-radius: 100%;
     text-align: center;
-    background: rgba(23, 171, 198, 1);
+    background: rgba(239, 232, 28, 0.8);
     
 }
 
@@ -40,7 +40,7 @@ div[id="estructura"] {
     text-align: center;
     max-width: 2000px;
     min-width: 100px;
-    background: rgba(224, 224, 28, 0.633);
+    background: rgba(75, 123, 244, 0.733);
     padding: 10%;
     margin-left: 4%;
     margin-right: 4%;
@@ -74,6 +74,7 @@ div[id="tapas"] {
     display: block;
     width: auto;
     min-width: 100px;
+    
 }
 
 
@@ -86,7 +87,8 @@ div[id="raciones"] {
 section{
     margin:7px;
     display:flex;
-    background: rgba(228, 52, 140, 0.1)
+    background: rgba(228, 52, 140, 0.1);
+    color:#Ffffff;
 
 }
 .precio{
