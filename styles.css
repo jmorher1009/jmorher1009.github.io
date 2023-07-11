@@ -66,6 +66,9 @@ footer {
     text-align: center;
     font-family: 'HoloLens MDL2 Assets';
 }
+b{
+ color:#Ffffff;   
+}
 
 div[id="tapas"] {
     display: block;
