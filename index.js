@@ -9,7 +9,18 @@ function cambiatema(bgcolor,textcolor){
 
 select.onchange = function(){
 
-    select.value === "negro" ? 
+    switch(select.value){
+        case("negro"):
+        {
+            cambiatema("black","white");
+        }
+        case("blanco"):{
+            cambiatema("white","black");
+        }
+    }
+
+    /*select.value === "negro" ? 
     cambiatema("black","white") 
     : cambiatema("white","black");
+*/
 }; 
