@@ -13,9 +13,11 @@ select.onchange = function(){
         case("negro"):
         {
             cambiatema("black","white");
+            break;
         }
         case("blanco"):{
             cambiatema("white","black");
+            break;
         }
     }
 
