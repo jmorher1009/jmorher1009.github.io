@@ -2,4 +2,10 @@
 select{
     background-color: black;
     color: white;
+    border-radius: 8%;
+    margin: 2px;
 }
+body{
+    text-align: center;
+    align-items: center;
+justify-content: center;}

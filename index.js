@@ -19,6 +19,19 @@ select.onchange = function(){
             cambiatema("white","black");
             break;
         }
+        case("morado"):{
+            cambiatema("purple","black");
+            break;
+        }
+        case("amarillo"):{
+            cambiatema("yellow","black");
+            break;
+        }
+        case("rojo"):{
+            cambiatema("red","black");
+            break;
+        }
+        
     }
 
     /*select.value === "negro" ? 
