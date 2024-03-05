@@ -1,0 +1,39 @@
+/* estilos.css */
+body {
+    font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000;
+  }
+  
+  h1 {
+    color: #333;
+  }
+
+.calculadora{
+    display: grid;
+    gap: 8px;
+    background-color: #000000;
+    padding: 5%;
+}
+input{
+    display: block;
+    padding: 5%;
+}
+
+.botones-box{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-width: 300px;
+    text-align: center;
+}
+button{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20%;
+    background-color: #00F20F;
+}
+  
