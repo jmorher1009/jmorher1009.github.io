@@ -11,42 +11,41 @@
 
 <body>
     <!--BOTONES-->
-    <div class ="calculadora">
+    <div class="calculadora">
         <!-- PANTALLA -->
-
-        <input type="pantalla">
+        <input type="text" id="pantalla">
 
         <div class="botones-box">
-        <!--PRIMERA FILA-->
-            
-        <button class="boton-accion">AC</button>
-        <button class="boton-accion" >()</button>
-        <button class="boton-accion">%</button>
-        <button class="boton-accion">÷</button>
-        <!--SEGUNDA FILA-->
-        <button class="boton-numero">7</button>
-        <button class="boton-numero">8</button>
-        <button class="boton-numero">9</button>
-        <button class="boton-numero">x</button>
+            <!--PRIMERA FILA-->
+            <button class="boton-accion" onclick="hacer('AC')">AC</button>
+            <button class="boton-accion" onclick="hacer('(')">(</button>
+            <button class="boton-accion" onclick="hacer('%')">%</button>
+            <button class="boton-accion" onclick="hacer('÷')">÷</button>
+            <!--SEGUNDA FILA-->
+            <button class="boton-numero" onclick="hacer('7')">7</button>
+            <button class="boton-numero" onclick="hacer('8')">8</button>
+            <button class="boton-numero" onclick="hacer('9')">9</button>
+            <button class="boton-accion" onclick="hacer('x')">x</button>
 
-        <!--TERCERA FILA-->
-        <button class="boton-numero">4</button>
-        <button class="boton-numero">5</button>
-        <button class="boton-numero">6</button>
-        <button class="boton-accion">-</button>
-        <!--CUARTA FILA-->
-        <button class="boton-numero">1</button>
-        <button class="boton-numero">2</button>
-        <button class="boton-numero">3</button>
-        <button class="boton-accion">+</button>
-        <!--QUINTA FILA-->
-        <button class="boton-numero">0</button>
-        <button class="boton-accion">,</button>
-        <button class="boton-accion">dlt</button>
-        <button class="boton-accion">=</button>
-    </div>    
+            <!--TERCERA FILA-->
+            <button class="boton-numero" onclick="hacer('4')">4</button>
+            <button class="boton-numero" onclick="hacer('5')">5</button>
+            <button class="boton-numero" onclick="hacer('6')">6</button>
+            <button class="boton-accion" onclick="hacer('-')">-</button>
+            <!--CUARTA FILA-->
+            <button class="boton-numero" onclick="hacer('1')">1</button>
+            <button class="boton-numero" onclick="hacer('2')">2</button>
+            <button class="boton-numero" onclick="hacer('3')">3</button>
+            <button class="boton-accion" onclick="hacer('+')">+</button>
+            <!--QUINTA FILA-->
+            <button class="boton-numero" onclick="hacer('0')">0</button>
+            <button class="boton-accion" onclick="hacer(',')">,</button>
+            <button class="boton-accion" onclick="hacer('dlt')">dlt</button>
+            <button class="boton-accion" onclick="hacer('=')">=</button>
+        </div>
     </div>
 
+    <script src="index.js"></script>
 </body>
 
 </html>
