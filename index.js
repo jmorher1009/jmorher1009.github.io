@@ -6,7 +6,7 @@ function hacer(caracter) {
 
 
     switch (caracter) {
-        case 'dlt': { valorActual = 0; break; }
+        case 'dlt': {  break; }
         case '=': { valorActual = resultado; break; }
         default: valorActual=1; break;
     }
