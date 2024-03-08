@@ -10,7 +10,6 @@ let arr = Array.from(buttons);
 arr.forEach(button => {
     button.addEventListener('click',(e) =>{
         if(e.target.innerHTML == '='){
-            
             try {
                 string = eval(input.value);
                 input.value = string;
@@ -22,14 +21,21 @@ arr.forEach(button => {
         }
         else if(e.target.innerHTML == 'AC')
         {
+            parentesis = false;
             string = "";
             input.value = string;
         }
-        else if(e.target.innerHTML == 'dlt'){
-            
-            string = string.substring(0,string.length-1);
-            input.value = string;
+        else if (e.target.innerHTML == 'dlt') {
 
+            var ultimoCaracterEliminado = string.charAt(string.length - 1);
+            if (ultimoCaracterEliminado == '(' && parentesis) {
+                parentesis = false;  
+            }
+            else if (ultimoCaracterEliminado == ')' && !parentesis) {
+                parentesis = true;  
+            }
+            string = string.substring(0, string.length - 1);
+            input.value = string;
         }
         else{
             if(e.target.innerHTML == '()'){
@@ -40,7 +46,7 @@ arr.forEach(button => {
                 else {
                     string += ')';
                     parentesis = false;    
-            }
+             }
             }
             else if(e.target.innerHTML == '÷')
                 string += '/';
