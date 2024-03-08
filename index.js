@@ -13,6 +13,7 @@ arr.forEach(button => {
             try {
                 string = eval(input.value);
                 input.value = string;
+                string = "";
               } catch (error) {
                 // Si ocurre un error, puedes manejarlo aquí
                 console.error("Error:", error);
