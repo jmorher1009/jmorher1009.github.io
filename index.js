@@ -1,15 +1,61 @@
-function hacer(caracter) {
-    var pantalla = document.getElementById("pantalla");
-    var valorActual = pantalla.value;
-    var resultado = 0;
+let input = document.getElementById('pantalla');
+let buttons = document.querySelectorAll('button');
 
+let string = "";
 
+let parentesis = false;
 
-    switch (caracter) {
-        case 'dlt': {  break; }
-        case '=': { valorActual = resultado; break; }
-        default: valorActual=1; break;
-    }
+let arr = Array.from(buttons);
 
-    pantalla.value = valorActual;
-}
+arr.forEach(button => {
+    button.addEventListener('click',(e) =>{
+        if(e.target.innerHTML == '='){
+            
+            try {
+                string = eval(input.value);
+                input.value = string;
+              } catch (error) {
+                // Si ocurre un error, puedes manejarlo aquí
+                console.error("Error:", error);
+                input.value = "Error";
+              }
+        }
+        else if(e.target.innerHTML == 'AC')
+        {
+            string = "";
+            input.value = string;
+        }
+        else if(e.target.innerHTML == 'dlt'){
+            
+            string = string.substring(0,string.length-1);
+            input.value = string;
+
+        }
+        else{
+            if(e.target.innerHTML == '()'){
+                if(!parentesis){
+                    string += '(';
+                    parentesis = true;
+                }
+                else {
+                    string += ')';
+                    parentesis = false;    
+            }
+            }
+            else if(e.target.innerHTML == '÷')
+                string += '/';
+            else if(e.target.innerHTML == ',')
+                string +='.';
+            else if(e.target.innerHTML == 'x')
+                string +='*';
+             if(e.target.innerHTML != '÷' && e.target.innerHTML !=',' && e.target.innerHTML !='x' && e.target.innerHTML !='()')   {
+                if(input.value == 'Error')
+                    string = "";
+                string += e.target.innerHTML;
+                
+                }
+            input.value = string;
+        }
+    })
+
+})
