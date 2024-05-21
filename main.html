@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="./styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script>
+        function validateLogin() {
+            var login = document.getElementById('login').value.toLowerCase();
+            var password = document.getElementById('password').value.toLowerCase();
+
+            if (login === password) {
+                switch (login) {
+                    case 'direccion':
+                        window.location.href = 'MENUS_DIRECCION/MENU_DIRECCION.html';
+                        break;
+                    case 'administracion':
+                        window.location.href = 'MENUS_ADMINISTRACION/MENU_ADMINISTRACION.html';
+                        break;
+                    case 'jefe_de_sala':
+                        window.location.href = 'MENUS_SALA/MENU_JEFE_DE_SALA.html';
+                        break;
+                    case 'personal_de_sala':
+                        window.location.href = 'MENUS_SALA/MENU_PERSONAL_DE_SALA.html';
+                        break;
+                    case 'jefe_de_cocina':
+                        window.location.href = 'MENUS_COCINA/MENU_JEFE_DE_COCINA.html';
+                        break;
+                    case 'personal_de_cocina':
+                        window.location.href = 'MENUS_COCINA/MENU_PERSONAL_DE_COCINA.html';
+                        break;
+                    default:
+                        alert('Nombre de usuario o contraseña incorrectos.');
+                }
+            } else {
+                alert('Nombre de usuario o contraseña incorrectos.');
+            }
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Restaurante Casa Lala</h1>
+    <form onsubmit="return validateLogin()">
+        <label for="login">Login:</label><br>
+        <input type="text" id="login" name="login" required><br><br>
+        <label for="password">Contraseña:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Iniciar sesión">
+    </form>
+</body>
+</html>
