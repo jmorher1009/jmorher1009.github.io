@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <h1>MENU INDICAR ESTADO DE PLATO</h1>
+    <form>
+        <h2>INDICAR ESTADO DE PLATO</h2><br>
+        <label for="login">Nombre:</label><br>
+        <input type="text" id="login" name="login" required placeholder="Nombre del plato..."><br>
+        <label for="login">Mesa:</label><br>
+        <input type="text" id="login" name="login" required placeholder="Mesa del plato..."><br>
+
+        <label for="login">Estado Plato:</label><br>
+        <input type="radio" name="selecciona tipo" value="en_cola" /> En cola 
+        <input type="radio" name="selecciona tipo" value="proceso" /> En proceso
+        <input type="radio" name="selecciona tipo" value="Sala_2" /> Terminado
+
+        <button>Indicar estado</button>
+    </form>
 </body>
 </html>
