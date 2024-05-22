@@ -40,6 +40,7 @@ input[type="text"], input[type="password"] {
     box-sizing: border-box;
 }
 
+
 input[type="submit"] {
     width: 100%;
     padding: 10px;
