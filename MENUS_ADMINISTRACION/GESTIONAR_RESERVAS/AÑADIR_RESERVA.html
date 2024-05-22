@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <h1>MENU AÑADIR RESERVA</h1>
+    <form>
+        <h2>MENU AÑADIR RESERVA</h2><br>
+        <label for="login">Nombre:</label><br>
+        <input type="text" id="login" name="login" required><br>
+
+        <label for="login">Zona restaurante:</label><br>
+        <input type="radio" name="selecciona tipo" value="terraza" /> terraza 
+        <input type="radio" name="selecciona tipo" value="Sala_1" /> Sala_1
+        <input type="radio" name="selecciona tipo" value="Sala_2" /> Sala_2
+        <label for="login">Hora de reserva:</label><br>
+        <input type="text" id="login" name="login" required placeholder="00:00"><br>
+
+        <button>Añadir reserva</button>
+    </form>
 </body>
 </html>
