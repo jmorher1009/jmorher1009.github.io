@@ -38,6 +38,10 @@ body {
 .square-button-twitter{
     background-color: #010101;
 }
+.square-button-whatsapp{
+    background-color: #00A86B
+}
+
 
 .square-button-youtube:hover {
     background-color: #6ba56e;
@@ -51,3 +55,7 @@ body {
 .square-button-twitter:hover {
     background-color: #6ba56e;
 }
+.square-button-whatsapp:hover {
+    background-color: #3BB143;
+}
+
