@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página Web Simple</title>
+    <title>Web chema</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #000000;
         }
-        .container {
-            width: 80%;
-            margin: 0 auto;
+        div {
             padding: 20px;
+            margin: 30px;
+            }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            margin: 10px;
         }
         h1 {
-            color: #333;
+            color: #b32b2b;
             text-align: center;
         }
         .nav {
@@ -25,16 +31,17 @@
             justify-content: center;
             margin-top: 20px;
         }
-        .nav a {
-            background-color: #4CAF50;
-            color: white;
+        a {
+            background-color: #cab814;
+            color: rgb(96, 78, 78);
             padding: 10px 20px;
             text-decoration: none;
             margin: 0 10px;
             border-radius: 5px;
+            padding: 15px;
         }
-        .nav a:hover {
-            background-color: #45a049;
+         a:hover {
+            background-color: #5bc4c6;
         }
 
         /* Media query para dispositivos móviles */
@@ -59,12 +66,15 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenido a Mi Página Web</h1>
-        <nav class="nav">
-            <a href="accesos.html">Accesos</a>
-            <a href="juegos.html">Juegos</a>
-        </nav>
+    <div>
+        <div class="container">
+            <a href="accesos.html">Página de accesos directos</a>
+        </div>
+        
+        <div class="container">
+                <a href="juegos/juegos.html">Mis juegos</a>
+        </div>
+
     </div>
 </body>
 </html>
