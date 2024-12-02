@@ -3,17 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#x1F12F; &#x1F12F; &#x1F12F; &#x1F12F;</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Mi Página Web Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .nav a {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+        .nav a:hover {
+            background-color: #45a049;
+        }
+
+        /* Media query para dispositivos móviles */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav a {
+                margin: 5px 0;
+                width: 80%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="button-container">
-        <a target="_blank" href="https://www.github.com" class="square-button square-button-github"></a>
-        <a target="_blank" href="https://www.youtube.com" class="square-button square-button-youtube"></a>
-        <a target="_blank" href="https://www.twitter.com" class="square-button square-button-twitter"></a>
-        <a target="_blank" href="https://www.twitch.com" class="square-button square-button-twitch"></a>
-	<a target="_blank" href="https://web.whatsapp.com" class="square-button square-button-whatsapp"></a>
-        
-</div>
+    <div class="container">
+        <h1>Bienvenido a Mi Página Web</h1>
+        <nav class="nav">
+            <a href="accesos.html">Accesos</a>
+            <a href="juegos.html">Juegos</a>
+        </nav>
+    </div>
 </body>
 </html>
