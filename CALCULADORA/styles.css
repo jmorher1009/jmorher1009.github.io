@@ -1,0 +1,15 @@
+body {
+    background-color: aquamarine;
+}
+a{
+    display: flex;
+    margin: 2%;
+    padding: 2%;
+    background-color: black;
+    color: whitesmoke;
+    text-decoration: none;
+    font-size: 40px;
+    text-align: center;
+    justify-content: center;
+    font-style:  normal;
+}

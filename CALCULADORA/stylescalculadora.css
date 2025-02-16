@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    background-color: #096f89;
+    height: 100%;
+    width :100%;
+}
+
+h1 {
+    color: #333;
+}
+
+.calculadora {
+    display: grid;
+    gap: 16px; /* Aumenté el espacio entre los elementos para dar más espacio visual */
+    background-color: #003030;
+    padding: 10%; /* Aumenté el espacio interno para que se vea más grande */
+    max-width: 600px; /* Limita el ancho máximo para evitar que se extienda demasiado */
+    width: 100%; /* Ocupa el 100% del ancho disponible */
+    height: 100%;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    margin: auto; /* Centra horizontalmente */
+}
+
+input {
+    display: block;
+    padding: 5%; /* Aumenté el espacio interno del input */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    font-size: 40px;
+}
+
+.botones-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    text-align: center;
+    width : 100%;
+    height: 100%;
+}
+
+button {
+    font-family: Orbitron ,Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    padding: 15px; /* Aumenté el espacio interno de los botones */
+    background-color: #00F20F;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+.boton-accion{
+   background-color: #FF00FF;
+}
+
+/* Consulta de medios para dispositivos con un ancho máximo de 600px (móviles) */
+@media screen and (max-width: 600px) {
+    .calculadora {
+        max-width: none; /* Elimina el ancho máximo para dispositivos más pequeños */
+        padding: 15%; /* Aumenta el espacio interno para dispositivos más pequeños */
+    }
+}
