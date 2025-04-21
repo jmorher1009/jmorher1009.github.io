@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Divs con Cambio de Color</title>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;  /* Evitar el scroll */
+      background-color: #f0f0f0;
+    }
+
+    #container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .square {
+      position: absolute;
+      background-color: white;
+      transition: background-color 0.5s;
+      box-sizing: border-box;
+    }
+
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+  <source src="ufo.mp3" type="audio/mp3">
+  Tu navegador no soporta la etiqueta de audio.
+</audio>
+
+<div id="container"></div> <!-- Contenedor principal de divs -->
+
+<script>
+  const cantidad = 128; // Número de divs para el efecto túnel (más divs para mayor efecto)
+  const container = document.getElementById("container");
+
+  // Crear los divs dentro del contenedor
+  for (let i = 1; i <= cantidad; i++) {
+    const nuevoDiv = document.createElement("div");
+    nuevoDiv.classList.add("square");
+    nuevoDiv.id = "div" + i;
+    container.appendChild(nuevoDiv);
+  }
+
+  // Función para generar color aleatorio
+  function colorAleatorio() {
+    const r = Math.floor(Math.random() * 160);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 78);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // Función para ajustar el tamaño y la posición de cada div
+  function ajustarDivs() {
+    const divs = container.querySelectorAll(".square");
+    const totalDivs = divs.length;
+    const maxSize = 100; // Tamaño máximo de los divs (el más grande, cubriendo la pantalla)
+
+    // Para evitar el desbordamiento, calculamos el tamaño relativo
+    const ratio = maxSize / totalDivs;  // Relación entre el número de divs y el tamaño
+
+    divs.forEach((div, index) => {
+      const size = maxSize - (index * ratio); // Disminuir el tamaño conforme avanzamos
+      div.style.width = `${size}vw`;
+      div.style.height = `${size}vh`;
+
+      // Posicionar cada div en el centro, sin que se desborden
+      div.style.top = `calc(50% - ${size / 2}vh)`;
+      div.style.left = `calc(50% - ${size / 2}vw)`;
+    });
+  }
+
+  // Inicializar los divs
+  ajustarDivs();
+
+  // Cambiar color cada 250ms
+  setInterval(() => {
+    const divs = container.querySelectorAll(".square");
+    divs.forEach(div => {
+      div.style.backgroundColor = colorAleatorio();
+    });
+  }, 250);
+
+</script>
+
+</body>
+</html>
