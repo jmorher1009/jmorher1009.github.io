@@ -26,15 +26,15 @@
             const fechaActual = new Date();
             
             if(i == 1){
-                const dia = fechaActual.getDate();
+                const dia = (fechaActual.getDate()).toString().padStart(2, '0');
                 const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
                 const anio = fechaActual.getFullYear();
                 i = 0;
                 return `${dia}/${mes}/${anio}`;
             }
             else{
-                const hora = (fechaActual.getHours() + 1).toString().padStart(2, '0');
-                const minuto = (fechaActual.getMinutes()+ 1).toString().padStart(2, '0');
+                const hora = (fechaActual.getHours()).toString().padStart(2, '0');
+                const minuto = (fechaActual.getMinutes()).toString().padStart(2, '0');
                 i++;
                 return `${hora}:${minuto}`;
             }
