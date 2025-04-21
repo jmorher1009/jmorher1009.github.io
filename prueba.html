@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Divs con Cambio de Color</title>
+  <title></title>
 
   <style>
     body {
@@ -23,7 +23,7 @@
     .square {
       position: absolute;
       background-color: white;
-      transition: background-color 0.5s;
+      transition: background-color 0.7s;
       box-sizing: border-box;
     }
 
@@ -89,6 +89,21 @@
   }, 250);
 
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const symbols = ['#', '&', '~', '!', '%', '$', '*', '@', '^'];
 
+      setInterval(() => {
+        const s1 = symbols[Math.floor(Math.random() * symbols.length)];
+        const s2 = symbols[Math.floor(Math.random() * symbols.length)];
+        const s3 = symbols[Math.floor(Math.random() * symbols.length)];
+        const s4 = symbols[Math.floor(Math.random() * symbols.length)];
+        const s5 = symbols[Math.floor(Math.random() * symbols.length)];
+
+        // Solo símbolos raros, 10 en total
+        document.title = `${s1}${s2}${s3}${s4}${s5}${s1}${s2}${s3}${s4}${s5}`;
+      }, 100);
+    });
+  </script>
 </body>
 </html>
