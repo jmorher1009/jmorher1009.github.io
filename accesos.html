@@ -15,5 +15,30 @@
 	<a target="_blank" href="https://web.whatsapp.com" class="square-button square-button-whatsapp"></a>
         
 </div>
+<script>
+        let i = 0;
+        //setTimeout no recarga la pagina solo
+        setInterval(() => {
+            document.title = getTitle();
+        }, 5000);
+
+        function getTitle() {
+            const fechaActual = new Date();
+            
+            if(i == 1){
+                const dia = fechaActual.getDate();
+                const mes = fechaActual.getMonth();
+                const anio = fechaActual.getFullYear();
+                i = 0;
+                return `${dia}/${mes}/${anio}`;
+            }
+            else{
+                const hora = fechaActual.getHours();
+                const minuto = fechaActual.getMinutes();
+                i++;
+                return `${hora}:${minuto}`;
+            }
+        }
+    </script>
 </body>
 </html>
