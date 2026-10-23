@@ -180,7 +180,8 @@ kbd {
 /* Mientras se escribe, las opciones y la cabecera se apagan para no distraer */
 body.escribiendo .opciones,
 body.escribiendo .top .volver,
-body.escribiendo .top .icono {
+body.escribiendo .top .icono,
+body.escribiendo .creditos {
     opacity: 0.15;
 }
 
@@ -905,6 +906,26 @@ body.escribiendo .top .icono:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
+}
+
+/* ----- Créditos del sonido ----- */
+
+.creditos {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--ui-3);
+    transition: opacity 0.35s;
+}
+
+.creditos a {
+    color: inherit;
+    text-underline-offset: 2px;
+}
+
+.creditos a:hover {
+    color: var(--ui-2);
 }
 
 /* ----- Animaciones ----- */

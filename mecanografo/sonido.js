@@ -1,9 +1,23 @@
-// Sonidos de máquina de escribir antigua sintetizados con Web Audio.
-// No hace falta ningún archivo de audio: cada golpe se construye con ruido filtrado y osciladores.
+// Sonidos de máquina de escribir antigua.
+// Se usan golpes reales de una Erika 5 de 1940 recortados en sonidos/erika.wav (grabación
+// «WWS Typewriter» de Work With Sounds / Konrad Gutkowski, CC BY 4.0). Si el archivo no se
+// puede cargar (por ejemplo al abrir la página con file://) se sintetizan con Web Audio.
 const Sonido = (() => {
+    const ARCHIVO = new URL('sonidos/erika.wav', document.currentScript ? document.currentScript.src : location.href);
+    // [inicio, duración] en segundos de cada golpe dentro del archivo
+    const MAPA = {
+        tecla: [[0.04, 0.1577], [0.2377, 0.1712], [0.4488, 0.1721], [0.661, 0.1443], [0.8453, 0.1462], [1.0315, 0.1395],
+            [1.211, 0.1439], [1.3949, 0.1462], [1.581, 0.1603], [1.7813, 0.1601], [1.9814, 0.1491], [2.1705, 0.1406]],
+        espacio: [[2.3511, 0.206], [2.5971, 0.2116], [2.8486, 0.2076]],
+        timbre: [3.0962, 0.925],
+        retorno: [4.0612, 1.48],
+    };
+    const GANANCIA_MUESTRAS = 1.4;
+
     let ctx = null;
     let salida = null;
     let ruido = null;
+    let muestras = null;
     let activo = true;
 
     try {
@@ -11,6 +25,26 @@ const Sonido = (() => {
     } catch (e) { /* sin almacenamiento: sonido activado */ }
 
     const azar = (min, max) => min + Math.random() * (max - min);
+
+    // Se descarga y decodifica al cargar la página (sin esperar a que el usuario toque nada)
+    // para que el primer golpe ya suene real. Un AudioBuffer sirve para cualquier contexto.
+    function cargarMuestras() {
+        const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+        if (!OAC || !window.fetch) return Promise.resolve(false);
+        return fetch(ARCHIVO)
+            .then(r => {
+                if (!r.ok) throw new Error(r.status);
+                return r.arrayBuffer();
+            })
+            .then(datos => new Promise((ok, mal) => new OAC(1, 1, 44100).decodeAudioData(datos, ok, mal)))
+            .then(buffer => {
+                muestras = buffer;
+                return true;
+            })
+            .catch(() => false);
+    }
+
+    const listo = cargarMuestras();
 
     // El navegador solo deja crear/reanudar el audio tras una acción del usuario
     function iniciar() {
@@ -38,6 +72,48 @@ const Sonido = (() => {
         if (ctx.state === 'suspended') ctx.resume();
         return true;
     }
+
+    // ----- Golpes grabados -----
+
+    function muestra([inicio, duracion], volumen = 1, velocidad = 1, retardo = 0) {
+        const fuente = ctx.createBufferSource();
+        fuente.buffer = muestras;
+        fuente.playbackRate.value = velocidad;
+        const g = ctx.createGain();
+        g.gain.value = volumen * GANANCIA_MUESTRAS;
+        fuente.connect(g).connect(salida);
+        fuente.start(ctx.currentTime + retardo, inicio, duracion);
+    }
+
+    // Elige un golpe al azar sin repetir el anterior, para que no suene a bucle
+    function sinRepetir(lista) {
+        let ultimo = -1;
+        return () => {
+            let i;
+            do {
+                i = Math.floor(Math.random() * lista.length);
+            } while (lista.length > 1 && i === ultimo);
+            ultimo = i;
+            return lista[i];
+        };
+    }
+
+    const golpe = sinRepetir(MAPA.tecla);
+    const barra = sinRepetir(MAPA.espacio);
+
+    const grabados = {
+        tecla: () => muestra(golpe(), azar(0.8, 1), azar(0.97, 1.03)),
+        acento: () => muestra(golpe(), azar(0.65, 0.8), azar(0.97, 1.03)),
+        espacio: () => muestra(barra(), azar(0.85, 1), azar(0.97, 1.03)),
+        retroceso: () => muestra(barra(), 0.6, 1.15),
+        linea: () => muestra(MAPA.timbre, 0.3),
+        fin: () => {
+            muestra(MAPA.timbre, 0.9);
+            muestra(MAPA.retorno, 0.9, 1, 0.45);
+        },
+    };
+
+    // ----- Golpes sintetizados (si no hay archivo) -----
 
     // Envolvente percusiva: ataque casi instantáneo y caída exponencial de 60 dB
     function envolvente(t, volumen, caida, ataque = 0.0015) {
@@ -134,7 +210,7 @@ const Sonido = (() => {
         tono(tope, { frec: 120, frecFinal: 50, volumen: volumen * 0.6, caida: 0.12 });
     }
 
-    const sonidos = {
+    const sintetizados = {
         tecla: () => tecla(true),
         acento: () => tecla(false), // las teclas muertas no hacen avanzar el carro
         espacio,
@@ -144,13 +220,15 @@ const Sonido = (() => {
     };
 
     function reproducir(tipo) {
-        if (!activo || !iniciar() || !sonidos[tipo]) return;
-        sonidos[tipo]();
+        if (!activo || !iniciar()) return;
+        const sonido = (muestras ? grabados : sintetizados)[tipo];
+        if (sonido) sonido();
     }
 
     return {
         iniciar,
         reproducir,
+        listo,
         get activo() {
             return activo;
         },
