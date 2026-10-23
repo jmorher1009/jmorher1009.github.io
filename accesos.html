@@ -3,42 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#x1F12F; &#x1F12F; &#x1F12F; &#x1F12F;</title>
+    <title>Accesos</title>
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0e0f13" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236366f1'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.7'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.7'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.45'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="button-container">
-        <a target="_blank" href="https://www.github.com" class="square-button square-button-github"></a>
-        <a target="_blank" href="https://www.youtube.com" class="square-button square-button-youtube"></a>
-        <a target="_blank" href="https://www.twitter.com" class="square-button square-button-twitter"></a>
-        <a target="_blank" href="https://www.twitch.com" class="square-button square-button-twitch"></a>
-	<a target="_blank" href="https://web.whatsapp.com" class="square-button square-button-whatsapp"></a>
-        
-</div>
-<script>
-        let i = 0;
-        //setTimeout no recarga la pagina solo
-        setInterval(() => {
-            document.title = getTitle();
-        }, 10000);
+    <main class="shell">
+        <header class="hero">
+            <p class="hero__greeting" id="saludo">Hola, Chema</p>
+            <h1 class="hero__clock" id="reloj">--:--</h1>
+            <p class="hero__date" id="fecha">&nbsp;</p>
+        </header>
 
-        function getTitle() {
-            const fechaActual = new Date();
-            
-            if(i == 1){
-                const dia = (fechaActual.getDate()).toString().padStart(2, '0');
-                const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
-                const anio = fechaActual.getFullYear();
-                i = 0;
-                return `${dia}/${mes}/${anio}`;
-            }
-            else{
-                const hora = (fechaActual.getHours()).toString().padStart(2, '0');
-                const minuto = (fechaActual.getMinutes()).toString().padStart(2, '0');
-                i++;
-                return `${hora}:${minuto}`;
-            }
-        }
-    </script>
+        <nav class="grid" aria-label="Accesos directos">
+            <a class="tile tile--moodle" href="https://aulasvirtuales.uhu.es" target="_blank" rel="noopener noreferrer">
+                <span class="tile__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/>
+                        <path d="M22 10v6"/>
+                        <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>
+                    </svg>
+                </span>
+                <span class="tile__text">
+                    <span class="tile__title">Moodle</span>
+                    <span class="tile__sub">Aulas virtuales UHU</span>
+                </span>
+                <kbd class="tile__key">1</kbd>
+                <span class="tile__go" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="tile tile--github" href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <span class="tile__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/>
+                    </svg>
+                </span>
+                <span class="tile__text">
+                    <span class="tile__title">GitHub</span>
+                    <span class="tile__sub">Repos y código</span>
+                </span>
+                <kbd class="tile__key">2</kbd>
+                <span class="tile__go" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="tile tile--drive" href="https://drive.google.com" target="_blank" rel="noopener noreferrer">
+                <span class="tile__icon" aria-hidden="true">
+                    <svg viewBox="0 0 87.3 78">
+                        <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                        <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/>
+                        <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
+                        <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                        <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                        <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                    </svg>
+                </span>
+                <span class="tile__text">
+                    <span class="tile__title">Drive</span>
+                    <span class="tile__sub">Mis archivos</span>
+                </span>
+                <kbd class="tile__key">3</kbd>
+                <span class="tile__go" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="tile tile--horario" href="https://docs.google.com/spreadsheets/d/1224ha-3-PnGu5aQlR7mXSWnJjxzC7iX6X66rsnApW_g/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+                <span class="tile__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 2v4"/>
+                        <path d="M16 2v4"/>
+                        <rect width="18" height="18" x="3" y="4" rx="2"/>
+                        <path d="M3 10h18"/>
+                        <path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/>
+                        <path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>
+                    </svg>
+                </span>
+                <span class="tile__text">
+                    <span class="tile__title">Horario</span>
+                    <span class="tile__sub">Clases de la semana</span>
+                </span>
+                <kbd class="tile__key">4</kbd>
+                <span class="tile__go" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="tile tile--mecanografo" href="mecanografo/mecanografo.html">
+                <span class="tile__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2"/>
+                        <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/>
+                        <path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>
+                        <path d="M7 16h10"/>
+                    </svg>
+                </span>
+                <span class="tile__text">
+                    <span class="tile__title">Mecanógrafo <span class="tile__badge">Nuevo</span></span>
+                    <span class="tile__sub">Mide tus palabras por minuto</span>
+                </span>
+                <kbd class="tile__key">5</kbd>
+                <span class="tile__go" aria-hidden="true">→</span>
+            </a>
+        </nav>
+
+        <footer class="foot">
+            <a class="foot__back" href="index.html">← Inicio</a>
+            <span class="foot__hint">Pulsa <kbd>1</kbd>–<kbd>5</kbd> para abrir un acceso</span>
+        </footer>
+    </main>
+
+<script>
+    const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
+                   'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+    const dos = n => n.toString().padStart(2, '0');
+
+    function saludo(hora) {
+        if (hora >= 6 && hora < 14) return 'Buenos días';
+        if (hora >= 14 && hora < 21) return 'Buenas tardes';
+        return 'Buenas noches';
+    }
+
+    // Reloj, fecha y saludo de la cabecera
+    function actualizarCabecera() {
+        const ahora = new Date();
+        const fecha = `${DIAS[ahora.getDay()]}, ${ahora.getDate()} de ${MESES[ahora.getMonth()]}`;
+        document.getElementById('reloj').textContent = `${dos(ahora.getHours())}:${dos(ahora.getMinutes())}`;
+        document.getElementById('fecha').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+        document.getElementById('saludo').textContent = `${saludo(ahora.getHours())}, Chema`;
+    }
+
+    // El título de la pestaña alterna entre la hora y la fecha cada 10 segundos
+    let mostrarFecha = false;
+    function actualizarTitulo() {
+        const ahora = new Date();
+        document.title = mostrarFecha
+            ? `${dos(ahora.getDate())}/${dos(ahora.getMonth() + 1)}/${ahora.getFullYear()}`
+            : `${dos(ahora.getHours())}:${dos(ahora.getMinutes())}`;
+        mostrarFecha = !mostrarFecha;
+    }
+
+    actualizarCabecera();
+    actualizarTitulo();
+    setInterval(actualizarCabecera, 1000);
+    setInterval(actualizarTitulo, 10000);
+
+    // Atajos de teclado: 1-5 abren el acceso correspondiente
+    const accesos = document.querySelectorAll('.tile');
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= accesos.length) accesos[n - 1].click();
+    });
+</script>
 </body>
 </html>

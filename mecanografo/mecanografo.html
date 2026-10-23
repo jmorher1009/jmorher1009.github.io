@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecanógrafo</title>
+    <meta name="description" content="Test de mecanografía de un minuto con sonido de máquina de escribir: mide tus palabras por minuto en español o inglés.">
+    <meta name="theme-color" content="#e9e3d6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#15130f" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232b2824'/%3E%3Ctext x='16' y='22.5' font-family='Courier New,monospace' font-weight='700' font-size='19' text-anchor='middle' fill='%23f3ead6'%3EA%3C/text%3E%3Crect x='8' y='25' width='16' height='2' rx='1' fill='%23e0a85a'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mecanografo.css">
+</head>
+<body>
+    <div class="app">
+        <header class="top">
+            <a class="volver" href="../accesos.html">← Accesos</a>
+            <h1 class="marca">Mecanógrafo</h1>
+            <button class="icono" id="btn-sonido" type="button" aria-pressed="true" aria-label="Sonido" title="Sonido (activar o silenciar)">
+                <svg class="icono__on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/>
+                    <path d="M16 9a5 5 0 0 1 0 6"/>
+                    <path d="M19.4 18.4a9 9 0 0 0 0-12.8"/>
+                </svg>
+                <svg class="icono__off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/>
+                    <path d="m22 9-6 6"/>
+                    <path d="m16 9 6 6"/>
+                </svg>
+            </button>
+        </header>
+
+        <section class="opciones" aria-label="Opciones del test">
+            <div class="segmentos" role="group" aria-label="Idioma">
+                <button type="button" aria-pressed="true" data-idioma="es">Español</button>
+                <button type="button" aria-pressed="false" data-idioma="en">English</button>
+            </div>
+            <button class="chip" id="btn-tildes" type="button" aria-pressed="true" title="Incluir o quitar las tildes de las palabras">
+                <span class="chip__marca" aria-hidden="true"></span>
+                Tildes
+            </button>
+            <span class="record" id="record"></span>
+        </section>
+
+        <main class="mesa" id="mesa">
+            <div class="marcador">
+                <div class="contador" id="contador" aria-label="Segundos restantes">60</div>
+                <div class="vivo"><strong id="vivo">–</strong> WPM</div>
+            </div>
+
+            <div class="hoja" id="hoja">
+                <div class="rodillo" aria-hidden="true"></div>
+                <div class="progreso" aria-hidden="true"><div class="progreso__barra" id="barra"></div></div>
+                <div class="texto" id="texto" aria-hidden="true">
+                    <div class="pista" id="pista"></div>
+                </div>
+                <div class="aviso-foco" id="aviso-foco">Haz clic aquí o pulsa una tecla para seguir escribiendo</div>
+                <input class="entrada" id="entrada" type="text" aria-label="Escribe aquí las palabras"
+                       autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+            </div>
+
+            <div class="pie-mesa">
+                <p class="ayuda" id="ayuda">Empieza a escribir y el contador arrancará solo</p>
+                <button class="boton boton--suave" id="btn-reiniciar" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    Reiniciar <kbd>Tab</kbd>
+                </button>
+            </div>
+        </main>
+
+        <section class="resultados" id="resultados" hidden aria-live="polite">
+            <div class="informe">
+                <div class="rodillo" aria-hidden="true"></div>
+                <span class="sello" id="r-sello" hidden>¡Nuevo récord!</span>
+                <div class="informe__cabecera">
+                    <div class="cifra cifra--principal">
+                        <span class="cifra__etiqueta">WPM</span>
+                        <span class="cifra__valor" id="r-wpm">0</span>
+                    </div>
+                    <div class="cifra">
+                        <span class="cifra__etiqueta">Precisión</span>
+                        <span class="cifra__valor" id="r-precision">0%</span>
+                    </div>
+                </div>
+
+                <div class="grafica">
+                    <div class="grafica__leyenda" aria-hidden="true">
+                        <span><i class="clave clave--wpm"></i>WPM</span>
+                        <span><i class="clave clave--bruto"></i>Bruto</span>
+                        <span><i class="clave clave--error"></i>Errores</span>
+                    </div>
+                    <div class="grafica__lienzo" id="grafica" tabindex="0" role="img"
+                         aria-label="Gráfica de palabras por minuto a lo largo del test. Usa las flechas para recorrerla."></div>
+                    <div class="tooltip" id="tooltip" hidden></div>
+                </div>
+
+                <dl class="detalles">
+                    <div><dt>Bruto</dt><dd id="r-bruto">0</dd></div>
+                    <div><dt>Caracteres <abbr title="correctos / errores / de más / omitidos">?</abbr></dt><dd id="r-caracteres">0</dd></div>
+                    <div><dt>Palabras bien</dt><dd id="r-palabras">0</dd></div>
+                    <div><dt>Récord</dt><dd id="r-record">–</dd></div>
+                </dl>
+
+                <details class="datos">
+                    <summary>Ver datos segundo a segundo</summary>
+                    <div class="datos__tabla">
+                        <table>
+                            <thead><tr><th>Segundo</th><th>WPM</th><th>Bruto</th><th>Errores</th></tr></thead>
+                            <tbody id="r-tabla"></tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+
+            <div class="acciones">
+                <button class="boton boton--suave" id="btn-repetir" type="button">Repetir texto</button>
+                <button class="boton boton--principal" id="btn-nuevo" type="button">Nuevo test <kbd>Tab</kbd></button>
+            </div>
+        </section>
+    </div>
+
+    <script src="palabras.js"></script>
+    <script src="sonido.js"></script>
+    <script src="mecanografo.js"></script>
+</body>
+</html>
