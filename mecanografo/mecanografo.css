@@ -24,6 +24,7 @@
     --l-pendiente: #a1978a;
     --l-ok: #1f1b16;
     --l-mal: #c2362b;
+    --l-falta: #cf9188;
     --l-extra: #8e2a20;
     --cursor: #2b59c3;
 
@@ -53,6 +54,7 @@
         --papel-texto-2: #625a4e;
 
         --l-pendiente: #91877a;
+        --l-falta: #c07e74;
     }
 }
 
@@ -218,6 +220,41 @@ body.escribiendo .top .icono:hover {
     background: var(--papel);
     color: #1f1b16;
     box-shadow: 0 1px 2px rgba(40, 30, 10, 0.18), 0 2px 8px -2px rgba(40, 30, 10, 0.2);
+}
+
+/* Sonido de las teclas: el punto lleva el color del vástago de cada switch */
+.sonidos button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding-inline: 13px;
+}
+
+.sonidos.apagado button[aria-pressed="true"] {
+    opacity: 0.55;
+}
+
+.punto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.punto--maquina {
+    border: 2px solid var(--laton);
+}
+
+.punto--azul {
+    background: #2f6fd6;
+}
+
+.punto--rojo {
+    background: #d63a2f;
+}
+
+.punto--marron {
+    background: #8a5a35;
 }
 
 .chip {
@@ -438,9 +475,29 @@ body.escribiendo .top .icono:hover {
     animation: golpe 0.12s ease-out;
 }
 
+/* En rojo la letra que se ha tecleado; encima, pequeña, la que tocaba */
 .l.mal {
+    position: relative;
     color: var(--l-mal);
     animation: golpe 0.12s ease-out;
+}
+
+.l.mal::before {
+    content: attr(data-letra);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0.05em;
+    font-size: 0.42em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    color: var(--l-pendiente);
+}
+
+/* Letras que se quedaron sin escribir al pasar a la siguiente palabra */
+.l.falta {
+    color: var(--l-falta);
 }
 
 .l.extra {

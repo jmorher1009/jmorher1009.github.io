@@ -1,50 +1,106 @@
-// Sonidos de máquina de escribir antigua.
-// Se usan golpes reales de una Erika 5 de 1940 recortados en sonidos/erika.wav (grabación
-// «WWS Typewriter» de Work With Sounds / Konrad Gutkowski, CC BY 4.0). Si el archivo no se
-// puede cargar (por ejemplo al abrir la página con file://) se sintetizan con Web Audio.
+// Sonidos de las teclas: una máquina de escribir antigua y tres teclados mecánicos Cherry MX.
+// Todos son golpes reales recortados de grabaciones libres (los créditos están en cada archivo de
+// sonidos/ y al pie de la página). El audio va en archivos .js (un WAV en base64) para que cargue
+// también al abrir la página con file://. Si no se puede decodificar, se sintetiza con Web Audio.
 const Sonido = (() => {
-    const ARCHIVO = new URL('sonidos/erika.wav', document.currentScript ? document.currentScript.src : location.href);
-    // [inicio, duración] en segundos de cada golpe dentro del archivo
-    const MAPA = {
-        tecla: [[0.04, 0.1577], [0.2377, 0.1712], [0.4488, 0.1721], [0.661, 0.1443], [0.8453, 0.1462], [1.0315, 0.1395],
-            [1.211, 0.1439], [1.3949, 0.1462], [1.581, 0.1603], [1.7813, 0.1601], [1.9814, 0.1491], [2.1705, 0.1406]],
-        espacio: [[2.3511, 0.206], [2.5971, 0.2116], [2.8486, 0.2076]],
-        timbre: [3.0962, 0.925],
-        retorno: [4.0612, 1.48],
+    const CARPETA = new URL('sonidos/', document.currentScript ? document.currentScript.src : location.href);
+    // [inicio, duración] en segundos de cada golpe dentro de su archivo
+    const PAQUETES = {
+        // Erika 5 de 1940
+        maquina: {
+            ganancia: 1.4,
+            tecla: [[0.04, 0.1577], [0.2377, 0.1712], [0.4488, 0.1721], [0.661, 0.1443], [0.8453, 0.1462], [1.0315, 0.1395],
+                [1.211, 0.1439], [1.3949, 0.1462], [1.581, 0.1603], [1.7813, 0.1601], [1.9814, 0.1491], [2.1705, 0.1406]],
+            espacio: [[2.3511, 0.206], [2.5971, 0.2116], [2.8486, 0.2076]],
+            timbre: [3.0962, 0.925],
+            retorno: [4.0612, 1.48],
+        },
+        // Cherry MX Blue: clic agudo al pulsar (clicky)
+        azul: {
+            ganancia: 1.5,
+            tecla: [[0.04, 0.152], [0.232, 0.1105], [0.3825, 0.152], [0.5745, 0.152], [0.7665, 0.0988], [0.9054, 0.152],
+                [1.0973, 0.152], [1.2893, 0.152], [1.4813, 0.152], [1.6733, 0.0904], [1.8037, 0.152]],
+            espacio: [[1.9957, 0.152], [2.1877, 0.109], [2.3368, 0.152]],
+        },
+        // Cherry MX Red: lineal, solo el golpe al llegar al fondo
+        rojo: {
+            ganancia: 1.5,
+            tecla: [[0.04, 0.1129], [0.1929, 0.152], [0.3849, 0.148], [0.5729, 0.152], [0.7649, 0.1373], [0.9422, 0.1415],
+                [1.1237, 0.1091], [1.2728, 0.1038], [1.4166, 0.0742], [1.5308, 0.1449], [1.7157, 0.1008], [1.8566, 0.0712]],
+            espacio: [[1.9678, 0.1335], [2.1413, 0.1401], [2.3214, 0.1235]],
+        },
+        // Cherry MX Brown: táctil, más suave que el azul
+        marron: {
+            ganancia: 1.5,
+            tecla: [[0.04, 0.0738], [0.1538, 0.1099], [0.3037, 0.0803], [0.4241, 0.1242], [0.5883, 0.1287], [0.757, 0.0887],
+                [0.8857, 0.118], [1.0437, 0.097], [1.1806, 0.104], [1.3246, 0.152], [1.5166, 0.1247], [1.6813, 0.0853]],
+            espacio: [[1.8066, 0.1203], [1.967, 0.1196], [2.1265, 0.124]],
+        },
     };
-    const GANANCIA_MUESTRAS = 1.4;
 
     let ctx = null;
     let salida = null;
     let ruido = null;
-    let muestras = null;
     let activo = true;
+    let tipo = 'maquina';
 
     try {
         activo = localStorage.getItem('mecanografo:sonido') !== 'off';
-    } catch (e) { /* sin almacenamiento: sonido activado */ }
+        const guardado = localStorage.getItem('mecanografo:tipo-sonido');
+        if (PAQUETES[guardado]) tipo = guardado;
+    } catch (e) { /* sin almacenamiento: sonido activado, máquina de escribir */ }
 
     const azar = (min, max) => min + Math.random() * (max - min);
 
-    // Se descarga y decodifica al cargar la página (sin esperar a que el usuario toque nada)
-    // para que el primer golpe ya suene real. Un AudioBuffer sirve para cualquier contexto.
-    function cargarMuestras() {
-        const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-        if (!OAC || !window.fetch) return Promise.resolve(false);
-        return fetch(ARCHIVO)
-            .then(r => {
-                if (!r.ok) throw new Error(r.status);
-                return r.arrayBuffer();
-            })
-            .then(datos => new Promise((ok, mal) => new OAC(1, 1, 44100).decodeAudioData(datos, ok, mal)))
-            .then(buffer => {
-                muestras = buffer;
-                return true;
-            })
-            .catch(() => false);
+    // ----- Carga de los paquetes -----
+
+    function leerScript(nombre) {
+        const almacen = () => window.SONIDOS_MECANOGRAFO || {};
+        if (almacen()[nombre]) return Promise.resolve(almacen()[nombre]);
+        return new Promise((ok, mal) => {
+            const script = document.createElement('script');
+            script.src = new URL(nombre + '.js', CARPETA).href;
+            script.onload = () => (almacen()[nombre] ? ok(almacen()[nombre]) : mal(new Error('vacío')));
+            script.onerror = () => mal(new Error('no se pudo cargar ' + nombre));
+            document.head.appendChild(script);
+        });
     }
 
-    const listo = cargarMuestras();
+    // Un AudioBuffer decodificado sin contexto real sirve después para cualquier contexto,
+    // así que se puede cargar sin esperar a que el usuario toque nada
+    function decodificar(base64) {
+        const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+        if (!OAC) return Promise.reject(new Error('sin Web Audio'));
+        const binario = atob(base64);
+        const bytes = new Uint8Array(binario.length);
+        for (let i = 0; i < binario.length; i++) bytes[i] = binario.charCodeAt(i);
+        return new Promise((ok, mal) => new OAC(1, 1, 44100).decodeAudioData(bytes.buffer, ok, mal));
+    }
+
+    function cargar(nombre) {
+        const p = PAQUETES[nombre];
+        if (!p) return Promise.resolve(false);
+        if (!p.carga) {
+            p.estado = 'cargando';
+            p.carga = leerScript(nombre)
+                .then(decodificar)
+                .then(buffer => {
+                    p.buffer = buffer;
+                    p.acciones = acciones(p);
+                    p.estado = 'listo';
+                    return true;
+                })
+                .catch(() => {
+                    p.estado = 'error';
+                    return false;
+                })
+                .finally(() => {
+                    // El base64 ya no hace falta: se libera la memoria
+                    if (window.SONIDOS_MECANOGRAFO) delete window.SONIDOS_MECANOGRAFO[nombre];
+                });
+        }
+        return p.carga;
+    }
 
     // El navegador solo deja crear/reanudar el audio tras una acción del usuario
     function iniciar() {
@@ -75,12 +131,12 @@ const Sonido = (() => {
 
     // ----- Golpes grabados -----
 
-    function muestra([inicio, duracion], volumen = 1, velocidad = 1, retardo = 0) {
+    function muestra(p, [inicio, duracion], volumen = 1, velocidad = 1, retardo = 0) {
         const fuente = ctx.createBufferSource();
-        fuente.buffer = muestras;
+        fuente.buffer = p.buffer;
         fuente.playbackRate.value = velocidad;
         const g = ctx.createGain();
-        g.gain.value = volumen * GANANCIA_MUESTRAS;
+        g.gain.value = volumen * p.ganancia;
         fuente.connect(g).connect(salida);
         fuente.start(ctx.currentTime + retardo, inicio, duracion);
     }
@@ -98,22 +154,36 @@ const Sonido = (() => {
         };
     }
 
-    const golpe = sinRepetir(MAPA.tecla);
-    const barra = sinRepetir(MAPA.espacio);
+    // Qué suena con cada acción. Todas reciben un retardo opcional en segundos.
+    function acciones(p) {
+        const golpe = sinRepetir(p.tecla);
+        const barra = sinRepetir(p.espacio);
+        const tecla = r => muestra(p, golpe(), azar(0.8, 1), azar(0.97, 1.03), r);
+        const espacio = r => muestra(p, barra(), azar(0.85, 1), azar(0.97, 1.03), r);
+        if (p.timbre) {
+            return {
+                tecla,
+                acento: r => muestra(p, golpe(), azar(0.65, 0.8), azar(0.97, 1.03), r),
+                espacio,
+                retroceso: r => muestra(p, barra(), 0.6, 1.15, r),
+                linea: r => muestra(p, p.timbre, 0.3, 1, r),
+                fin: (r = 0) => {
+                    muestra(p, p.timbre, 0.9, 1, r);
+                    muestra(p, p.retorno, 0.9, 1, r + 0.45);
+                },
+            };
+        }
+        // En un teclado la tecla muerta y el retroceso son pulsaciones como las demás,
+        // y no hay campanilla ni carro
+        return {
+            tecla,
+            acento: tecla,
+            espacio,
+            retroceso: r => muestra(p, golpe(), azar(0.7, 0.85), azar(0.97, 1.03), r),
+        };
+    }
 
-    const grabados = {
-        tecla: () => muestra(golpe(), azar(0.8, 1), azar(0.97, 1.03)),
-        acento: () => muestra(golpe(), azar(0.65, 0.8), azar(0.97, 1.03)),
-        espacio: () => muestra(barra(), azar(0.85, 1), azar(0.97, 1.03)),
-        retroceso: () => muestra(barra(), 0.6, 1.15),
-        linea: () => muestra(MAPA.timbre, 0.3),
-        fin: () => {
-            muestra(MAPA.timbre, 0.9);
-            muestra(MAPA.retorno, 0.9, 1, 0.45);
-        },
-    };
-
-    // ----- Golpes sintetizados (si no hay archivo) -----
+    // ----- Golpes sintetizados (si no hay grabación) -----
 
     // Envolvente percusiva: ataque casi instantáneo y caída exponencial de 60 dB
     function envolvente(t, volumen, caida, ataque = 0.0015) {
@@ -219,16 +289,37 @@ const Sonido = (() => {
         fin: () => { timbre(0.45); retornoCarro(0.8); },
     };
 
-    function reproducir(tipo) {
+    // Mientras se carga un paquete no suena nada; si no se pudo cargar, se usa el sintetizado
+    function reproducir(accion) {
         if (!activo || !iniciar()) return;
-        const sonido = (muestras ? grabados : sintetizados)[tipo];
-        if (sonido) sonido();
+        const p = PAQUETES[tipo];
+        const sonido = p.acciones ? p.acciones[accion] : p.estado === 'error' ? sintetizados[accion] : null;
+        if (sonido) sonido(0);
     }
+
+    // Para escuchar un sonido al elegirlo: tres teclas y la barra espaciadora
+    function probar() {
+        if (!activo || !iniciar()) return;
+        const elegido = tipo;
+        cargar(elegido).then(() => {
+            const p = PAQUETES[elegido];
+            if (tipo !== elegido || !activo) return;
+            if (!p.acciones) {
+                reproducir('tecla');
+                return;
+            }
+            for (const r of [0, 0.12, 0.23]) p.acciones.tecla(r);
+            p.acciones.espacio(0.37);
+        });
+    }
+
+    cargar(tipo);
 
     return {
         iniciar,
         reproducir,
-        listo,
+        probar,
+        cargar,
         get activo() {
             return activo;
         },
@@ -238,6 +329,17 @@ const Sonido = (() => {
                 localStorage.setItem('mecanografo:sonido', valor ? 'on' : 'off');
             } catch (e) { /* no pasa nada si no se puede guardar */ }
             if (valor) iniciar();
+        },
+        get tipo() {
+            return tipo;
+        },
+        set tipo(valor) {
+            if (!PAQUETES[valor]) return;
+            tipo = valor;
+            try {
+                localStorage.setItem('mecanografo:tipo-sonido', valor);
+            } catch (e) { /* no pasa nada si no se puede guardar */ }
+            cargar(valor);
         },
     };
 })();

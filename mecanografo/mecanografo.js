@@ -29,8 +29,10 @@
         btnNuevo: $('btn-nuevo'),
         grafica: $('grafica'),
         tooltip: $('tooltip'),
+        sonidos: $('sonidos'),
     };
     const botonesIdioma = document.querySelectorAll('[data-idioma]');
+    const botonesSonido = document.querySelectorAll('[data-sonido]');
 
     const leer = clave => {
         try { return localStorage.getItem('mecanografo:' + clave); } catch (e) { return null; }
@@ -97,6 +99,7 @@
             const span = document.createElement('span');
             span.className = 'l';
             span.textContent = letra;
+            span.dataset.letra = letra; // la que toca, para enseñarla encima si se falla
             // Cada tipo deja una tinta y una altura un poco distintas, como en una máquina real
             span.style.setProperty('--tinta', azar(0.8, 1).toFixed(2));
             span.style.setProperty('--dy', azar(-0.025, 0.025).toFixed(3) + 'em');
@@ -140,11 +143,24 @@
         const palabra = objetivo[i];
         const escrito = escritas[i] || '';
         const letras = nodo.children;
+        const cerrada = i < actual;
 
         for (let j = 0; j < palabra.length; j++) {
             let clase = 'l';
-            if (j < escrito.length) clase += escrito[j] === palabra[j] ? ' ok' : ' mal';
+            // Como en una máquina de verdad, en el papel queda la letra que se ha tecleado
+            let letra = palabra[j];
+            if (j < escrito.length) {
+                if (escrito[j] === palabra[j]) {
+                    clase += ' ok';
+                } else {
+                    clase += ' mal';
+                    letra = escrito[j];
+                }
+            } else if (cerrada) {
+                clase += ' falta'; // se pasó a la siguiente palabra sin escribirla entera
+            }
             if (letras[j].className !== clase) letras[j].className = clase;
+            if (letras[j].textContent !== letra) letras[j].textContent = letra;
         }
 
         // Letras escritas de más al final de la palabra
@@ -162,7 +178,7 @@
             }
         }
 
-        nodo.classList.toggle('error', i < actual && escrito !== palabra);
+        nodo.classList.toggle('error', cerrada && escrito !== palabra);
     }
 
     function moverCursor() {
@@ -790,7 +806,7 @@
     });
 
     // Los botones no roban el foco a la hoja al hacer clic
-    for (const boton of [dom.btnSonido, dom.btnTildes, dom.btnReiniciar, ...botonesIdioma]) {
+    for (const boton of [dom.btnSonido, dom.btnTildes, dom.btnReiniciar, ...botonesIdioma, ...botonesSonido]) {
         boton.addEventListener('mousedown', e => e.preventDefault());
     }
 
@@ -817,6 +833,15 @@
         if (estado !== 'fin') enfocar();
     });
 
+    // Al elegir un sonido se oye una muestra (y se quita el silencio si estaba puesto)
+    botonesSonido.forEach(boton => boton.addEventListener('click', () => {
+        Sonido.tipo = boton.dataset.sonido;
+        if (!Sonido.activo) Sonido.activo = true;
+        actualizarSonido();
+        Sonido.probar();
+        if (estado !== 'fin') enfocar();
+    }));
+
     dom.btnReiniciar.addEventListener('click', () => reiniciar());
     dom.btnRepetir.addEventListener('click', () => reiniciar(true));
     dom.btnNuevo.addEventListener('click', () => reiniciar());
@@ -830,6 +855,8 @@
     function actualizarSonido() {
         dom.btnSonido.setAttribute('aria-pressed', String(Sonido.activo));
         dom.btnSonido.title = Sonido.activo ? 'Silenciar' : 'Activar sonido';
+        botonesSonido.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sonido === Sonido.tipo)));
+        dom.sonidos.classList.toggle('apagado', !Sonido.activo);
     }
 
     let temporizadorResize = 0;
